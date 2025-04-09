@@ -1,0 +1,23 @@
+Q: What is the purpose of this lab?
+A: The purpose is to implement a custom barrier synchronization mechanism in Java, where threads wait at a barrier until a specific number of them have arrived, after which all are released.
+
+Q: What is a barrier in multithreaded programming?
+A: A barrier is a synchronization point where threads must wait until a predefined number of threads have reached that point before any can proceed.
+
+Q: How does your barrier work?
+A: Threads call joinBarrier() when they reach the barrier. If the number of threads that have joined is less than the barrier size, they wait. When the number reaches the barrier size, all waiting threads are released using notifyAll(). Any threads that arrive afterward pass through immediately.
+
+Q: How do you ensure thread safety?
+A: The joinBarrier() method is synchronized, which ensures only one thread can execute it at a time. Shared state like the thread counter is safely updated, and wait/notifyAll are used for coordination.
+
+Q: What triggers the release of waiting threads?
+A: When the number of threads that have called joinBarrier() reaches barrierSize + 1, the notifyAll() method is called to release all threads waiting at the barrier.
+
+Q: Why do threads not pass the barrier in order?
+A: Java's notifyAll() does not guarantee the order in which waiting threads are resumed, so the threads pass through in a non-deterministic order.
+
+Q: What happens to threads that arrive after the barrier has been passed?
+A: Threads that arrive after the barrier has been released pass through immediately without waiting.
+
+Q: Can this implementation deadlock?
+A: No, because once the required number of threads reach the barrier, all waiting threads are released, and no thread is left waiting indefinitely.
